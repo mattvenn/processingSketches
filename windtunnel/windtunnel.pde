@@ -1,3 +1,4 @@
+/* these are the things you may need to edit */
 String school = "sauce tests";
 int powerBarMax = 200; //mw
 int speedBarMax = 2000; //rpm
@@ -13,7 +14,7 @@ import gnu.io.CommPortIdentifier;
 FullScreen fs; 
 //change at startup
 
-boolean fixRPM = true; // true;
+
 
 ControlP5 controlP5;
 Serial myPort;  // Create object from Serial class
@@ -482,38 +483,18 @@ void doCalcs()
 {
   float voltage, power;
   Double speed = new Double("0.0");
+  speed = rawTurbineTacho;
 
-  /*
-  // println( rawTurbineTacho );
-  //rawTurbineTacho is microseconds it takes for 0.5 rotation
-  if( rawTurbineTacho != 0 )
-  {
-    speed = 30 / ( rawTurbineTacho / 1000000 ); //rpm
-  }
-  */
-  //  println( speed );
-
- // if( fixRPM )
- // {
-  //  speed = (double)voltage *  1000;   
- // }
- // else
- // {
-     speed = rawTurbineTacho;
-//  }
-
-//fix the voltage to the speed
- voltage = (float)(speed / 1000.0);
+//fix the voltage to the speed if the voltage is broken
+// voltage = (float)(speed / 1000.0);
   // println( rawTurbineVoltage );
   //p=iv, i=v/r so p = (v*v)/r
   //voltage *= 10;
   //get voltage in real terms
-//  voltage = (float)rawTurbineVoltage / ( 1024 / 5 );
+  voltage = (float)rawTurbineVoltage / ( 1024 / 5 );
   power = ( voltage * voltage )/LOAD;
   power *= 1000; //mw
-  // println( voltage );
-  // println( power );
-
+ 
   //update display
   if( speed.floatValue() > highSpeed )
   {
