@@ -1,7 +1,7 @@
 /* these are the things you may need to edit */
 String school = "sauce tests";
-int powerBarMax = 200; //mw
-int speedBarMax = 2000; //rpm
+int powerBarMax = 50; //mw
+int speedBarMax = 2500; //rpm
   
 import ddf.minim.*;
 
