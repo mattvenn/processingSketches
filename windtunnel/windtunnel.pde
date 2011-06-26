@@ -1,5 +1,5 @@
 /* these are the things you may need to edit */
-String school = "sauce tests";
+String school = "sauce 210611 group2";
 int powerBarMax = 50; //mw
 int speedBarMax = 2500; //rpm
   
