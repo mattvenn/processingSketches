@@ -69,6 +69,21 @@ void drawCurve(float x, float y, float fx, float fy, float cx, float cy) {
 }
                                                      
 
+              
+void drawCircles(int number, int centerx, int centery, int r) {
+   // Draw a certain number of concentric circles at the given center with
+   // radius r
+   int dr=0;
+   if (number > 0) {
+     dr = r/number;
+     for (int k=0; k<number; k++) {
+       drawCircle(centerx, centery, r);
+       r=r-dr;
+     }
+   }
+}
+          
+          
 void drawCircle(int centerx, int centery, int radius) {
   // Estimate a circle using 20 arc Bezier curve segments
   int segments =20;
