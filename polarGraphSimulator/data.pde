@@ -21,7 +21,7 @@ void readData()
     while((  s = in.readLine()) != null )
     {
       lines ++;
-      println( s );
+    //  println( s );
       String [] datum = s.split(",");
       String data = datum[0];
       float energy = 0;
@@ -41,6 +41,8 @@ void readData()
   //      break;
     }
     in.close();
+      println( "got " + lines + " rows, made " + i + "buckets" );
+
   } 
   catch (IOException e) 
   {
