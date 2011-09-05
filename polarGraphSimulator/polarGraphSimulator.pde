@@ -40,32 +40,39 @@ void setup()
    setupData();
    stroke(color(255,0,0));
     strokeWeight(2);
-   drawN();
+   //drawN();
    //   noLoop();
 }
-
-void drawN()
+int i = 0;
+void draw()
 {
  //  for( int days = 0; days < numDays ; days ++ )
-/* int w = width;
+ int w = width;
  int h = height;
- int circleWidth = (h - ceiling )/ 16;
- for( int x = 0; x < 5; x ++ )
-
- {
-   for( int y = 0; y < 5 ; y ++ )
-   {
-      drawCircle( x * h / 6 + ( w / 2 - h / 3 ), y * h / 6 + circleWidth + ceiling , circleWidth );
-   }
- } 
- */
+/*
+      drawCircleSegment( w/2, h/2 + ceiling , h/4,0,8);
+      drawCircleSegment( w/2, h/2 + ceiling , h/4,8,12 );
+      drawCircleSegment( w/2, h/2 + ceiling , h/4,12,20 );
+*/
+ 
+  circles( energyArray[0][i], i );     
+  i ++;
+  
+  if( i >= numBuckets )
+  {
+    println( "finished" );
+    while(true)
+    {
+    }
+  }
+ /*
   {
     for( int i = 0; i < numBuckets ; i ++ )
     {
-      circles( energyArray[0][i], i );     
+     
     }
   }
-  
+  */
 }
 void drawPoint()
 {
