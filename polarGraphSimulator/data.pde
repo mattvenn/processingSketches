@@ -1,8 +1,8 @@
 float[][] energyArray;
-int numBuckets = 144;
+int numBuckets = 1440;
 int day, bucket = 0;
 int numDays =7;
-int maxEnergy = 6000;
+int maxEnergy = 4000;
 //globals
 
 
@@ -49,7 +49,7 @@ void readData()
         System.out.println("NumberFormatException: " + nfe.getMessage());
       }
       energyArray[0][i] += energy;
-      if( lines % 10 == 0 )
+     // if( lines % 10 == 0 )
         i ++;
 //      if( i >= numBuckets )
   //      break;

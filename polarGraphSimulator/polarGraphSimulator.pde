@@ -96,28 +96,6 @@ catch( IOException e )
 }
 }
 
-void drawN()
-{
-  //  for( int days = 0; days < numDays ; days ++ )
-  /* int w = width;
-   int h = height;
-   int circleWidth = (h - ceiling )/ 16;
-   for( int x = 0; x < 5; x ++ )
-   
-   {
-   for( int y = 0; y < 5 ; y ++ )
-   {
-   drawCircle( x * h / 6 + ( w / 2 - h / 3 ), y * h / 6 + circleWidth + ceiling , circleWidth );
-   }
-   } 
-   */
-  {
-    for ( int i = 0; i < numBuckets ; i ++ )
-    {
-      circles( energyArray[0][i], i );
-    }
-  }
-}
 void drawPoint()
 {
 
