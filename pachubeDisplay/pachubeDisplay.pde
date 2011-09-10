@@ -25,9 +25,9 @@ void setup()
 void draw() {
   String date, lastDate = "";
   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-  Calendar calendar = new GregorianCalendar(2011,Calendar.SEPTEMBER,4);
+  Calendar calendar = new GregorianCalendar(2011,Calendar.SEPTEMBER,6);
 
-  for( int i = 0; i <= 4; i ++ )
+  for( int i = 0; i <= 1; i ++ )
   {
     calendar.add(Calendar.HOUR,6);
 
@@ -38,7 +38,7 @@ void draw() {
       int pageNum = 1; //1 indexed!
       while( true )
       {
-        String interval = "60";
+        String interval = "0";
         int linesGot = readURL( String.format( "http://%s%s?key=%s&start=%s&end=%s&interval=%s&page=%d", host, URL,key,lastDate,date,interval,pageNum ++) ) ; 
         if( linesGot != 100 )
           break;
