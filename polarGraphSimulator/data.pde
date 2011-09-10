@@ -5,6 +5,20 @@ int numDays =7;
 int maxEnergy = 6000;
 //globals
 
+
+ public int parseMinutes(String timestamp)
+    throws Exception {
+   /*
+   ** we specify Locale.US since months are in english
+   */
+  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+   Date d = sdf.parse(timestamp);
+   Calendar cal = Calendar.getInstance();
+   cal.setTime(d);
+   return cal.get(Calendar.HOUR) * 60 + cal.get(Calendar.MINUTE); 
+
+ }
+
 void setupData()
 {
   energyArray = new float[numDays][numBuckets];
