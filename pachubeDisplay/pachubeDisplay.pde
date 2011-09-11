@@ -25,7 +25,7 @@ void setup()
 void draw() {
   String date, lastDate = "";
   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-  Calendar calendar = new GregorianCalendar(2011,Calendar.SEPTEMBER,4);
+  Calendar calendar = new GregorianCalendar(2011,Calendar.SEPTEMBER,6);
 
   for( int i = 0; i <= 4; i ++ )
   {
