@@ -6,7 +6,7 @@ import java.net.*;
 import java.io.*;
 
 
-
+String energyFile = "/home/matthew/energy.data";
 String host = "api.pachube.com";
 String URL = "/v2/feeds/28462/datastreams/4.csv";
 String key = "ZxBqcZRDClLxco2ZUbeat1D6x7pfOL5Jhmo60Ies2TU";
@@ -25,11 +25,11 @@ void setup()
 void draw() {
   String date, lastDate = "";
   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-  Calendar calendar = new GregorianCalendar(2011,Calendar.SEPTEMBER,6);
+  Calendar calendar = new GregorianCalendar(2011,Calendar.SEPTEMBER,11);
 
-  for( int i = 0; i <= 1; i ++ )
+  for( int i = 0; i <= 4; i ++ )
   {
-    calendar.add(Calendar.HOUR,6);
+
 
     date = sdf.format(calendar.getTime());
     println( "from " + lastDate + " to " + date );
@@ -45,11 +45,12 @@ void draw() {
       }
     }    
     lastDate = date;
+    calendar.add(Calendar.HOUR,6);
   }
   //do nothing
    println( "finished" );
    try {
-    BufferedWriter out = new BufferedWriter(new FileWriter("/tmp/t2"));
+    BufferedWriter out = new BufferedWriter(new FileWriter(energyFile));
     for(Iterator i = data.iterator();i.hasNext();)
     {
        out.write((String)(i.next()));
