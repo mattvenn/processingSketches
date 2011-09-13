@@ -2,7 +2,7 @@ float[][] energyArray;
 int numBuckets = 1440;
 int day, bucket = 0;
 int numDays =7;
-int maxEnergy = 4000;
+int maxEnergy = 2000;
 //globals
 
 
@@ -15,7 +15,7 @@ int maxEnergy = 4000;
    Date d = sdf.parse(timestamp);
    Calendar cal = Calendar.getInstance();
    cal.setTime(d);
-   return cal.get(Calendar.HOUR) * 60 + cal.get(Calendar.MINUTE); 
+   return cal.get(Calendar.HOUR_OF_DAY) * 60 + cal.get(Calendar.MINUTE); 
 
  }
 

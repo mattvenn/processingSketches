@@ -1,21 +1,28 @@
-int smallestRadius = 5;
+int minRadius = 5;
 int lastSegment = 0;
 boolean newCell = false;
-int radius;
+int radius = minRadius;
+int radiusIncrement = 4;
+float energyPerSegment = 250;
+float remainderEnergy;
+int lastNumber;
 void circles( float energy, int number )
 {
-  if( number % 10 == 0 )
+  number = number / 10;
+  if( number != lastNumber)
   {
     newCell = true;
-    radius = smallestRadius;
-    println( "new cell" + number);
+    radius = minRadius;
+    lastSegment = 0;
+    lastNumber = number;
+    println( "---------------------------------------------new cell" + number);
   }
   else
   {
-    newCell = false; 
+    newCell = false;
   }
-  number /= 10;
-  
+  //number /= 10;
+
   int y = number / 12;
   int x = number % 12;
   int cellWidth = ( w - 2 * margin ) / 13;
@@ -27,25 +34,55 @@ void circles( float energy, int number )
   y += cellWidth;
   y += ceiling;
   int r = cellWidth / 2;
-  
+
   if( newCell )
-     moveTo( x, y );
+  {
+    moveTo( x, y );
+    println( "---> moved to" );
+  }
   //println( "x: " + x * cellWidth + " y: " + y * cellWidth );
   //int radius = (int)map( energy, 0, maxEnergy, 0, cellWidth / 2 );
-  int numSegments = (int)map( energy, 0, maxEnergy, 0, 10 );
- //  println( energy + " = " + radius );
 
-   if( numSegments + lastSegment <= 20 )
-   {
-    drawCircleSegment( x, y, radius, lastSegment, lastSegment + numSegments );
-    lastSegment += numSegments;
-   }
-   else
-   {
-     drawCircleSegment( x, y, radius, lastSegment, 20 );
-     radius += 5;
-     drawCircleSegment( x, y, radius, 0, lastSegment - numSegments);
-     lastSegment = lastSegment - numSegments;
-   }
+  energy += remainderEnergy;
+  int numSegments = (int)(energy / energyPerSegment);
+  remainderEnergy = energy - (energyPerSegment * numSegments);
+  println( "segments: " + numSegments );
+  println( "remainder: " + remainderEnergy );
 
+
+  //  println( energy + " = " + radius );
+   drawSegments( x, y, numSegments );
+
+ 
 }
+
+void drawSegments(int x,int y, int numSegments)
+{
+
+  int segmentsDrawn = 0;
+
+  int currentSegment = lastSegment;
+
+ // println( "start seg: " + currentSegment + " num segs: " + numSegments );
+  while( numSegments > segmentsDrawn )
+  {
+    if( currentSegment < 20 )
+    {
+   //   println( x + "," + y + ", " + radius + ", " + currentSegment + "," + (currentSegment + 1 ) );
+     drawCircleSegment( x, y, radius, currentSegment, currentSegment + 1 );
+     currentSegment +=1;
+     segmentsDrawn +=1;
+
+    }
+   else
+    {
+   //   println( "reset" );
+      radius += radiusIncrement;
+      currentSegment = 0;
+    }
+  }
+  lastSegment = currentSegment;
+//  println( "segments drawn: " + segmentsDrawn );
+  
+}
+

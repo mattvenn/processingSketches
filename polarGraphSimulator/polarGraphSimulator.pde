@@ -34,6 +34,7 @@ void setup()
   lastPoint = new Point(x1, y1);
   currPoint = new Point(x1, y1);
   size(w, h);
+ println( "started" );
   lString = a1 ; // - 100;
   rString = b1; // - 100; 
   background(255);
@@ -42,20 +43,26 @@ void setup()
   strokeWeight(2);
 
   try {
-     in = new BufferedReader(new FileReader("/tmp/fifo"));
+     in = new BufferedReader(new FileReader("/home/matthew/energy.data"));
   } 
   catch (IOException e) 
   {
     println( e );
+    exit();
   }
   //   drawN();
 
   //   noLoop();
 }
 int number = 0;
+boolean drawn = false;
 void draw()
 {
+
+
   String s;
+ // if( number < 20 )
+  {
   try{
     
     if((  s = in.readLine()) != null )
@@ -65,12 +72,14 @@ void draw()
     try
     {
     int minute = parseMinutes( datum[0] );
-    println( minute );
+
     try
     {
+      number ++;
       float energy =Float.valueOf(datum[1].trim()).floatValue();
+    println( "==" +  minute + ", " + energy );
       circles( energy, minute );
-
+    //  delay(100);
     }
     catch (NumberFormatException nfe)
     {
@@ -85,7 +94,7 @@ void draw()
     else
     {
       //wait for another line
-      delay(10);
+  //    delay(10);
     }
   
 
@@ -94,6 +103,7 @@ catch( IOException e )
 {
   println( e );
 }
+  }
 }
 
 void drawPoint()

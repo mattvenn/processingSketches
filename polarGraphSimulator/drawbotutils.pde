@@ -85,6 +85,7 @@ void drawCircles(int number, int centerx, int centery, int r) {
           
 void drawCircleSegment(int centerx, int centery, int radius, int startSeg, int endSeg) {
     // Estimate a circle using 20 arc Bezier curve segments
+//  println( centerx + "," + centery + ", " + radius + ", " + startSeg + ", " + endSeg );
   int segments =20;
   int angle1 = 360/segments*startSeg;
   int midpoint=0;
