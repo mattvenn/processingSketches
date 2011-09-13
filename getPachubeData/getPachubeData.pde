@@ -9,7 +9,7 @@ import java.io.*;
 String energyFile = "/home/matthew/energy.data";
 String host = "api.pachube.com";
 String URL = "/v2/feeds/28462/datastreams/4.csv";
-String key = "ZxBqcZRDClLxco2ZUbeat1D6x7pfOL5Jhmo60Ies2TU";
+String key; 
 ArrayList data = new ArrayList();
 //this works:
 
@@ -17,11 +17,24 @@ ArrayList data = new ArrayList();
 void setup()
 {
   size(200, 200);
- 
+  key = loadKey(); 
 }
 
-
-
+String loadKey()
+{
+try {
+    BufferedReader in = new BufferedReader(new FileReader("data/key"));
+    String k = in.readLine();
+    k.trim();
+    return k;
+  } 
+  catch (IOException e) 
+  {
+    println( e );
+    exit();
+  }
+  return "";
+}
 void draw() {
   String date, lastDate = "";
   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
