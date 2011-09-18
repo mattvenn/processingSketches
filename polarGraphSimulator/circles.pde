@@ -49,13 +49,11 @@ void circles( float energy, int number )
   println( "segments: " + numSegments );
   println( "remainder: " + remainderEnergy );
 
-
   //  println( energy + " = " + radius );
    drawSegments( x, y, numSegments );
-
- 
 }
 
+//draws a number of increasingly sized circles, segment by segment.
 void drawSegments(int x,int y, int numSegments)
 {
 

@@ -34,7 +34,7 @@ void setup()
   lastPoint = new Point(x1, y1);
   currPoint = new Point(x1, y1);
   size(w, h);
- println( "started" );
+  println( "started" );
   lString = a1 ; // - 100;
   rString = b1; // - 100; 
   background(255);
@@ -43,66 +43,53 @@ void setup()
   strokeWeight(2);
 
   try {
-     in = new BufferedReader(new FileReader("/home/matthew/energy.data"));
+    in = new BufferedReader(new FileReader("/home/matthew/energy.data"));
   } 
   catch (IOException e) 
   {
     println( e );
     exit();
   }
-  //   drawN();
-
-  //   noLoop();
 }
-int number = 0;
-boolean drawn = false;
+
 void draw()
 {
-
-
   String s;
- // if( number < 20 )
-  {
-  try{
-    
-    if((  s = in.readLine()) != null )
-  {
-    println( s );
-    String [] datum = s.split(",");
-    try
-    {
-    int minute = parseMinutes( datum[0] );
+  try {
 
-    try
+    if((  s = in.readLine()) != null )
     {
-      number ++;
-      float energy =Float.valueOf(datum[1].trim()).floatValue();
-    println( "==" +  minute + ", " + energy );
-      circles( energy, minute );
-    //  delay(100);
-    }
-    catch (NumberFormatException nfe)
-    {
-      System.out.println("NumberFormatException: " + nfe.getMessage());
-    }
-    }
-    catch( Exception e )
-    {
-      println( "couldn't parse minutes" + e );
-    }
-  } 
+      println( s );
+      String [] datum = s.split(",");
+      try
+      {
+        int minute = parseMinutes( datum[0] );
+
+        try
+        {
+          float energy =Float.valueOf(datum[1].trim()).floatValue();
+          println( "==" +  minute + ", " + energy );
+          circles( energy, minute );
+        }
+        catch (NumberFormatException nfe)
+        {
+          System.out.println("NumberFormatException: " + nfe.getMessage());
+        }
+      }
+      catch( Exception e )
+      {
+        println( "couldn't parse minutes" + e );
+      }
+    } 
     else
     {
       //wait for another line
-  //    delay(10);
+      //    delay(10);
     }
-  
-
   }
-catch( IOException e )
-{
-  println( e );
-}
+  catch( IOException e )
+  {
+    println( e );
   }
 }
 
