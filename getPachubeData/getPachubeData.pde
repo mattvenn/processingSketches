@@ -5,25 +5,24 @@ import java.util.GregorianCalendar;
 import java.net.*;
 import java.io.*;
 
-
+//where we'll store the data
 String energyFile = "/home/matthew/energy.data";
 String host = "api.pachube.com";
 String URL = "/v2/feeds/28462/datastreams/4.csv";
-String key; 
+String key; //store your key in ./data/key
+String interval = "0";
 ArrayList data = new ArrayList();
-//this works:
 
-//http://api.pachube.com/v2/feeds/28462/datastreams/4.csv?key=ZxBqcZRDClLxco2ZUbeat1D6x7pfOL5Jhmo60Ies2TU&start=2011-08-24T00:00:00&end=2011-08-24T06:00:00&interval=0s&page=1
 void setup()
 {
   size(200, 200);
-  key = loadKey(); 
+  key = loadKey();
 }
 
 String loadKey()
 {
-try {
-    BufferedReader in = new BufferedReader(new FileReader("data/key"));
+  try {
+    BufferedReader in = new BufferedReader(new FileReader(sketchPath("./data/key")));
     String k = in.readLine();
     k.trim();
     return k;
@@ -35,15 +34,14 @@ try {
   }
   return "";
 }
+
 void draw() {
   String date, lastDate = "";
   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-  Calendar calendar = new GregorianCalendar(2011,Calendar.SEPTEMBER,11);
+  Calendar calendar = new GregorianCalendar(2011,Calendar.SEPTEMBER,13);
 
   for( int i = 0; i <= 4; i ++ )
   {
-
-
     date = sdf.format(calendar.getTime());
     println( "from " + lastDate + " to " + date );
     if( lastDate.length() >0)
@@ -51,7 +49,7 @@ void draw() {
       int pageNum = 1; //1 indexed!
       while( true )
       {
-        String interval = "0";
+
         int linesGot = readURL( String.format( "http://%s%s?key=%s&start=%s&end=%s&interval=%s&page=%d", host, URL,key,lastDate,date,interval,pageNum ++) ) ; 
         if( linesGot != 100 )
           break;
@@ -61,51 +59,50 @@ void draw() {
     calendar.add(Calendar.HOUR,6);
   }
   //do nothing
-   println( "finished" );
-   try {
+  println( "finished" );
+  try {
     BufferedWriter out = new BufferedWriter(new FileWriter(energyFile));
     for(Iterator i = data.iterator();i.hasNext();)
     {
-       out.write((String)(i.next()));
-       out.write( "\n" );
+      out.write((String)(i.next()));
+      out.write( "\n" );
     }
     out.close();
-  } catch (IOException e) 
+  } 
+  catch (IOException e) 
   {
     println( e );
   }
   while(true)
   {
-   
   }
 }
-
-
 
 int readURL( String urlString )
 {
   try
   {
-  URL url = new URL(urlString);
-  println( url.getHost() );
-  println( url );
-  BufferedReader in = new BufferedReader(
-        new InputStreamReader(
-        url.openStream()));
+    URL url = new URL(urlString);
+    println( url.getHost() );
+    println( url );
+    BufferedReader in = new BufferedReader(
+    new InputStreamReader(
+    url.openStream()));
 
-  String inputLine;
-  int lines = 0;
-  while ((inputLine = in.readLine()) != null)
-  {
-     // System.out.println(inputLine);
+    String inputLine;
+    int lines = 0;
+    while ((inputLine = in.readLine()) != null)
+    {
+      // System.out.println(inputLine);
       data.add( inputLine );
       lines ++;
-  }
-  println( "got " + lines );
-  println( "array size: " + data.size() );
-  in.close();
-  return lines;
-  } catch( MalformedURLException e )
+    }
+    println( "got " + lines );
+    println( "array size: " + data.size() );
+    in.close();
+    return lines;
+  } 
+  catch( MalformedURLException e )
   {
     println( e );
   }
@@ -113,7 +110,7 @@ int readURL( String urlString )
   {
     println( e );
   }
- return -1;
+  return -1;
 }
 
 
@@ -125,4 +122,4 @@ void processData( String data )
 
   println(  dataArray.length );
 }
-  
+
