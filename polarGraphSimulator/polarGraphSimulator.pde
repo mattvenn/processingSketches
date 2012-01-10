@@ -31,6 +31,7 @@ int b1= (int)sqrt(pow((w-x1), 2)+pow(y1, 2));
 BufferedReader in;
 void setup()
 {
+  frameRate(2000);
   lastPoint = new Point(x1, y1);
   currPoint = new Point(x1, y1);
   size(w, h);
@@ -50,47 +51,56 @@ void setup()
     println( e );
     exit();
   }
+  while( drawEnergyPic() )
+  {}
 }
-
+int line = 0;
+String s;
 void draw()
 {
-  String s;
-  try {
-
+ // println( "loop" );
+}
+boolean drawEnergyPic()
+{
+  try 
+  {
     if((  s = in.readLine()) != null )
     {
-      println( s );
-      String [] datum = s.split(",");
-      try
+     
+      if( line ++ % 100 == 0 )
+        println( line );
+        
       {
-        int minute = parseMinutes( datum[0] );
-
+        String [] datum = s.split(",");
         try
         {
-          float energy =Float.valueOf(datum[1].trim()).floatValue();
-          println( "==" +  minute + ", " + energy );
-          circles( energy, minute );
+          int minute = parseMinutes( datum[0] );
+
+          try
+          {
+            float energy =Float.valueOf(datum[1].trim()).floatValue();
+            println( "==" +  minute + ", " + energy );
+            drawEnergy( energy, minute );
+            return true;
+          }
+          catch (NumberFormatException nfe)
+          {
+            System.out.println("NumberFormatException: " + nfe.getMessage());
+          }
         }
-        catch (NumberFormatException nfe)
+        catch( Exception e )
         {
-          System.out.println("NumberFormatException: " + nfe.getMessage());
+          println( "couldn't parse minutes" + e );
         }
       }
-      catch( Exception e )
-      {
-        println( "couldn't parse minutes" + e );
-      }
-    } 
-    else
-    {
-      //wait for another line
-      //    delay(10);
+     
     }
   }
   catch( IOException e )
   {
     println( e );
   }
+  return false;
 }
 
 void drawPoint()
