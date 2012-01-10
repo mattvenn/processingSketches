@@ -10,7 +10,7 @@ String energyFile = "/home/matthew/energy.data";
 String host = "api.pachube.com";
 String URL = "/v2/feeds/28462/datastreams/4.csv";
 String key; //store your key in ./data/key
-String interval = "0";
+String interval = "60"; // "0"; //interval 0 == all data, 60 = one datapoint every 60 secs
 ArrayList data = new ArrayList();
 
 void setup()
@@ -38,9 +38,10 @@ String loadKey()
 void draw() {
   String date, lastDate = "";
   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-  Calendar calendar = new GregorianCalendar(2011,Calendar.SEPTEMBER,13);
-
-  for( int i = 0; i <= 4; i ++ )
+  Calendar calendar = new GregorianCalendar(2012,Calendar.JANUARY,6);
+  int days = 3;
+  
+  for( int i = 0; i <= 4 * days; i ++ )
   {
     date = sdf.format(calendar.getTime());
     println( "from " + lastDate + " to " + date );
