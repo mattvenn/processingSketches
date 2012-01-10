@@ -1,3 +1,6 @@
+
+
+/*
 int minRadius = 5;
 int lastSegment = 0;
 boolean newCell = false;
@@ -6,7 +9,7 @@ int radiusIncrement = 4;
 float energyPerSegment = 250;
 float remainderEnergy;
 int lastNumber;
-void circles( float energy, int number )
+void drawEnergy( float energy, int number )
 {
   number = number / 10;
   if( number != lastNumber)
@@ -15,7 +18,7 @@ void circles( float energy, int number )
     radius = minRadius;
     lastSegment = 0;
     lastNumber = number;
-    println( "---------------------------------------------new cell" + number);
+ //   println( "---------------------------------------------new cell" + number);
   }
   else
   {
@@ -38,7 +41,7 @@ void circles( float energy, int number )
   if( newCell )
   {
     moveTo( x, y );
-    println( "---> moved to" );
+    //println( "---> moved to" );
   }
   //println( "x: " + x * cellWidth + " y: " + y * cellWidth );
   //int radius = (int)map( energy, 0, maxEnergy, 0, cellWidth / 2 );
@@ -46,8 +49,8 @@ void circles( float energy, int number )
   energy += remainderEnergy;
   int numSegments = (int)(energy / energyPerSegment);
   remainderEnergy = energy - (energyPerSegment * numSegments);
-  println( "segments: " + numSegments );
-  println( "remainder: " + remainderEnergy );
+ // println( "segments: " + numSegments );
+ // println( "remainder: " + remainderEnergy );
 
   //  println( energy + " = " + radius );
    drawSegments( x, y, numSegments );
@@ -83,4 +86,4 @@ void drawSegments(int x,int y, int numSegments)
 //  println( "segments drawn: " + segmentsDrawn );
   
 }
-
+*/
