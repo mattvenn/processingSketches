@@ -5,18 +5,20 @@
  */
 
 import controlP5.*;
+import processing.serial.*;
 
+Serial myPort;  // Create object from Serial class
 ControlP5 controlP5;
 int myColor = color(0,0,0);
 
 boolean fan = false;
 int holeSize = 25;
-int heat = 50;
-int heatTime = 20;
-int ventOpenDelay = 10;
-int ventOpenTime = 20;
+int heat = 150;
+int heatTime = 5;
+int ventOpenDelay = 3;
+int ventOpenTime = 5;
 
-int maxHeat = 100;
+int maxHeat = 255;
 int maxHeatTime = 60;
 int maxVentOpenTime = 100;
 int maxVentOpenDelay = maxHeatTime / 2;
@@ -37,9 +39,13 @@ int runPos = 0;
 Textlabel ttLabel;
 void setup()
 {
-  size(600,400);
+  size(600,400,P2D);
   controlP5 = new ControlP5(this);
   
+  //serial
+  String portName = Serial.list()[0];
+  myPort = new Serial(this, portName, 9600);
+  println( portName );
   //hole size
   int pos_x = start_x;
   int pos_y = start_y;
@@ -61,7 +67,8 @@ void setup()
   controlP5.addToggle("fan",false,pos_x,pos_y,butt_h,slid_w).setMode(ControlP5.SWITCH);
   pos_y += butt_margin;
   controlP5.addButton("load",0,pos_x,pos_y,butt_h,slid_w);
-
+  pos_y += butt_margin;
+  controlP5.addButton("release",0,pos_x,pos_y,butt_h,slid_w);
   ttLabel = controlP5.addTextlabel("tt","end time",width - 30, height-60);
   controlP5.addTextlabel("start","0 s",10, height-60);
   
@@ -100,7 +107,14 @@ void draw()
      for( int i = tmap(10,tt); i < width; i += tmap(10,tt) )
      {
        line(i,lineStart - markerHeight, i , lineStart + markerHeight );
-     }      
+     } 
+controlP5.draw();     
+
+  while( myPort.available() > 0 )
+  {
+    char a = myPort.readChar();
+    print( a);
+  }
 }
 
 int tmap(int val,int totalTime)
@@ -108,9 +122,27 @@ int tmap(int val,int totalTime)
   return (int)map(val,0,totalTime,0,width);
 }
 
+
+public void release(int val)
+{
+  myPort.write( 'C' );
+  delay(100);
+}
 public void load(int val) 
 {
   println("loading vals to scentclock");
-  println( fan + "," + holeSize + "," + heat + "," + heatTime + "," + ventOpenDelay  + "," + ventOpenTime);
+  println( (fan ? 1:0) + "," + holeSize + "," + heat + "," + heatTime + "," + ventOpenDelay  + "," + ventOpenTime);
+  myPort.write( 'A' );
+  myPort.write(  (fan ? 1:0));
+  myPort.write( holeSize );
+  myPort.write( heat );
+  myPort.write( heatTime );
+  myPort.write(  ventOpenDelay );
+  myPort.write(ventOpenTime );
+
+  delay(100);
+  myPort.write( 'B' );
+  delay(100);
+
 }
 
