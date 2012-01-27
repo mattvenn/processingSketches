@@ -84,10 +84,10 @@ void draw()
   background(0);
   
   int tt;
-    if( ventOpenDelay > heatTime )
+    if( ventOpenDelay + ventOpenTime > heatTime )
       tt = ventOpenDelay + ventOpenTime;
     else
-      tt = heatTime + ventOpenTime;
+      tt = heatTime;
   
     ttLabel.setValue( Integer.toString( tt ) + " s" );
    
