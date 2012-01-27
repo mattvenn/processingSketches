@@ -11,8 +11,8 @@ Serial myPort;  // Create object from Serial class
 ControlP5 controlP5;
 int myColor = color(0,0,0);
 
-boolean fan = false;
-int holeSize = 25;
+int fan = 50;
+int holeSize = 1;
 int heat = 150;
 int heatTime = 5;
 int ventOpenDelay = 3;
@@ -22,7 +22,8 @@ int maxHeat = 255;
 int maxHeatTime = 60;
 int maxVentOpenTime = 100;
 int maxVentOpenDelay = maxHeatTime / 2;
-int maxHoleSize = 100;
+int maxHoleSize = 4;
+int maxFan = 100;
 
 int slid_w = 40;
 int slid_h = 200;
@@ -35,14 +36,19 @@ int start_y = 50; //slid_h + 50;
 //globals
 boolean run = false;
 int runPos = 0;
-   
+int time = 0;
+
+String myString;
+int lf = 10;    // Linefeed in ASCII
+
 Textlabel ttLabel;
 void setup()
 {
-  size(600,400,P2D);
+  size(700,400,P2D);
   controlP5 = new ControlP5(this);
   
   //serial
+
   String portName = Serial.list()[0];
   myPort = new Serial(this, portName, 9600);
   println( portName );
@@ -59,13 +65,12 @@ void setup()
   pos_x += slid_w + slid_margin;
   s = controlP5.addSlider("ventOpenTime",0,maxVentOpenTime,ventOpenTime,pos_x,pos_y,slid_w,slid_h);   
   pos_x += slid_w + slid_margin;
-  s = controlP5.addSlider("holeSize",0,maxHoleSize,holeSize,pos_x,pos_y,slid_w,slid_h); //min, max, start, x, top y, width, height
+  s = controlP5.addSlider("holeSize",1,maxHoleSize,holeSize,pos_x,pos_y,slid_w,slid_h); //min, max, start, x, top y, width, height
   s.setNumberOfTickMarks(5);
   pos_x += slid_w + slid_margin;
+  s = controlP5.addSlider("fan",0,maxFan,fan,pos_x,pos_y,slid_w,slid_h); //min, max, start, x, top y, width, height
+  pos_x += slid_w + slid_margin;
        
-  //fan
-  controlP5.addToggle("fan",false,pos_x,pos_y,butt_h,slid_w).setMode(ControlP5.SWITCH);
-  pos_y += butt_margin;
   controlP5.addButton("load",0,pos_x,pos_y,butt_h,slid_w);
   pos_y += butt_margin;
   controlP5.addButton("release",0,pos_x,pos_y,butt_h,slid_w);
@@ -92,9 +97,10 @@ void draw()
      rect(0,height-heatBarWidth,tmap(heatTime,tt),heatBarWidth);
    
      //vent bar
-     fill(color(100,100,100));
-     if( fan )
-       fill(color(180,180,180));
+     int ventC = 50 + fan * 2;
+     fill(color(ventC,ventC,ventC));
+   //  if( fan )
+   //    fill(color(180,180,180));
        
      float ventBarWidth =  map(holeSize,0,maxHoleSize,0,40);
      rect(tmap( ventOpenDelay,tt),height-ventBarWidth-40,tmap(ventOpenTime,tt),ventBarWidth);
@@ -107,13 +113,32 @@ void draw()
      for( int i = tmap(10,tt); i < width; i += tmap(10,tt) )
      {
        line(i,lineStart - markerHeight, i , lineStart + markerHeight );
-     } 
-controlP5.draw();     
 
+     } 
+     //time marker
+     fill(0);
+     ellipse( tmap( time,tt ), lineStart, 10,10 );
+    controlP5.draw();     
+
+  //serial stuff
   while( myPort.available() > 0 )
   {
-    char a = myPort.readChar();
-    print( a);
+     myString = myPort.readStringUntil(lf);
+    if (myString != null) {
+      print(myString);
+      myString = trim( myString );
+      if( myString.startsWith( "t=" ) )
+      {
+        //
+        String []list = split(myString, '=' );
+        if( list.length == 2 )
+       {
+       //  println( "time = " + list[1] );
+         time = Integer.parseInt(list[1]);
+       }
+      }
+    }
+
   }
 }
 
@@ -131,9 +156,9 @@ public void release(int val)
 public void load(int val) 
 {
   println("loading vals to scentclock");
-  println( (fan ? 1:0) + "," + holeSize + "," + heat + "," + heatTime + "," + ventOpenDelay  + "," + ventOpenTime);
+  println( fan + "," + holeSize + "," + heat + "," + heatTime + "," + ventOpenDelay  + "," + ventOpenTime);
   myPort.write( 'A' );
-  myPort.write(  (fan ? 1:0));
+  myPort.write( fan );
   myPort.write( holeSize );
   myPort.write( heat );
   myPort.write( heatTime );
