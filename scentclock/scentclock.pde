@@ -18,8 +18,8 @@ int ventOpenDelay = 3;
 int ventOpenTime = 5;
 
 int maxHeat = 255;
-int maxHeatTime = 600;
-int maxVentOpenTime = 600;
+int maxHeatTime = 255;
+int maxVentOpenTime = 255;
 int maxVentOpenDelay = maxHeatTime / 2;
 int maxHoleSize = 4;
 int maxFan = 100;
