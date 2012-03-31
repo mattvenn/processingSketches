@@ -11,24 +11,24 @@ ControlP5 controlP5;
 int myColor = color(0,0,0);
 
 int fan = 50;
-int holeSize = 1;
-int heat = 150;
+int heat = 20;
 int heatTime = 5;
 int ventOpenDelay = 3;
 int ventOpenTime = 5;
+int switchInterval = 10;
 
-int maxHeat = 255;
-int maxHeatTime = 255;
-int maxVentOpenTime = 255;
+int maxHeat = 30;
+int maxHeatTime = 600;
+int maxVentOpenTime = 600;
 int maxVentOpenDelay = maxHeatTime / 2;
-int maxHoleSize = 4;
 int maxFan = 100;
+int maxSwitchInterval = 600;
 
 int slid_w = 40;
 int slid_h = 200;
 int slid_margin = 40;
 int butt_h = 100;
-int butt_margin = 80;
+int butt_margin = 50;
 int start_x = 50;
 int start_y = 50; //slid_h + 50;
 
@@ -64,18 +64,25 @@ void setup()
   pos_x += slid_w + slid_margin;
   s = controlP5.addSlider("ventOpenTime",0,maxVentOpenTime,ventOpenTime,pos_x,pos_y,slid_w,slid_h);   
   pos_x += slid_w + slid_margin;
-  s = controlP5.addSlider("holeSize",1,maxHoleSize,holeSize,pos_x,pos_y,slid_w,slid_h); //min, max, start, x, top y, width, height
-  s.setNumberOfTickMarks(5);
-  pos_x += slid_w + slid_margin;
   s = controlP5.addSlider("fan",0,maxFan,fan,pos_x,pos_y,slid_w,slid_h); //min, max, start, x, top y, width, height
   pos_x += slid_w + slid_margin;
-       
+  s = controlP5.addSlider("switchInterval",0,maxSwitchInterval,switchInterval,pos_x,pos_y,slid_w,slid_h); //min, max, start, x, top y, width, height
+  pos_x += slid_w + slid_margin;
+  
   controlP5.addButton("load",0,pos_x,pos_y,butt_h,slid_w);
   pos_y += butt_margin;
-  controlP5.addButton("release",0,pos_x,pos_y,butt_h,slid_w);
+  controlP5.addButton("release1",0,pos_x,pos_y,butt_h,slid_w);
+  pos_y += butt_margin;
+  controlP5.addButton("release2",0,pos_x,pos_y,butt_h,slid_w);
+  pos_y += butt_margin;
+  controlP5.addButton("release3",0,pos_x,pos_y,butt_h,slid_w);
+  
   ttLabel = controlP5.addTextlabel("tt","end time",width - 30, height-60);
   controlP5.addTextlabel("start","0 s",10, height-60);
   
+  //show starting vals
+  myPort.write( 'B' );
+
 }
 
 void draw()
@@ -101,7 +108,7 @@ void draw()
    //  if( fan )
    //    fill(color(180,180,180));
        
-     float ventBarWidth =  map(holeSize,0,maxHoleSize,0,40);
+     float ventBarWidth =  40;
      rect(tmap( ventOpenDelay,tt),height-ventBarWidth-40,tmap(ventOpenTime,tt),ventBarWidth);
      
    //time bar
@@ -147,23 +154,40 @@ int tmap(int val,int totalTime)
 }
 
 
-public void release(int val)
+public void release1(int val)
 {
   myPort.write( 'C' );
-  delay(100);
+  writeInt( 1 );
+}
+public void release2(int val)
+{
+  myPort.write( 'C' );
+  writeInt( 2 );
+}
+public void release3(int val)
+{
+  myPort.write( 'C' );
+  writeInt( 3 );
+}
+void writeInt( int x )
+{
+byte upper = (byte)(x >> 8); //Get the upper 8 bits
+byte lower = (byte)(x & 0xFF); //Get the lower 8bits
+myPort.write(upper);
+myPort.write(lower);
 }
 public void load(int val) 
 {
   println("loading vals to scentclock");
-  println( fan + "," + holeSize + "," + heat + "," + heatTime + "," + ventOpenDelay  + "," + ventOpenTime);
+  //println( heat + "," + heatTime + "," + ventOpenDelay  + "," + ventOpenTime + "," + fan);
   myPort.write( 'A' );
-  myPort.write( fan );
-  myPort.write( holeSize );
-  myPort.write( heat );
-  myPort.write( heatTime );
-  myPort.write(  ventOpenDelay );
-  myPort.write(ventOpenTime );
-
+  writeInt( heat );
+  writeInt( heatTime );
+  writeInt( ventOpenDelay );
+  writeInt(ventOpenTime );
+  writeInt( fan );
+  writeInt( switchInterval );
+  
   delay(100);
   myPort.write( 'B' );
   delay(100);
