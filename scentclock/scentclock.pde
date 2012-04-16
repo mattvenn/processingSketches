@@ -20,7 +20,7 @@ int switchInterval = 10;
 int fanOn = 10;
 int fanOff = 10;
 
-int maxHeat = 30;
+int maxHeat = 160;
 int maxHeatTime = 60 * 60 * 2;
 int maxVentOpenTime = 60 * 60 * 2;
 int maxFanOn = 1200;
@@ -129,7 +129,7 @@ void draw()
      line(0,height-40,width,height-40);
      int lineStart = height -40;
      int markerHeight = 10;
-     for( int i = tmap(10,tt); i < width; i += tmap(60,tt) )
+     for( int i = tmap(0,tt); i < width; i += tmap(60,tt) )
      {
        line(i,lineStart - markerHeight, i , lineStart + markerHeight );
      } 
