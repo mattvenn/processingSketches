@@ -41,6 +41,10 @@ void moveTo(int x2, int y2) {
   while ((a1!=a2) || (b1!=b2)) {
     if (a1!=a2) { 
       a1 += stepA;
+      if( debug )
+      {
+         debugSteps ++;
+      }
       //StepperA.step(stepA); 
       lString += stepA;
     }
@@ -48,6 +52,10 @@ void moveTo(int x2, int y2) {
       b1 += stepB;
    //      StepperB.step(-stepB);
        rString += stepB;
+       if( debug)
+       {
+         debugSteps ++;
+       }
     }
     drawPoint();
   }
@@ -60,10 +68,11 @@ void drawCurve(float x, float y, float fx, float fy, float cx, float cy) {
   // (cx, cy)
   float xt=0;
   float yt=0;
-
+  int skipDistance = 5; //how far we have to move until we bother actually trying to move the pen
   for (float t=0; t<=1; t+=.0025) {
     xt = pow((1-t),2) *x + 2*t*(1-t)*cx+ pow(t,2)*fx;
     yt = pow((1-t),2) *y + 2*t*(1-t)*cy+ pow(t,2)*fy;
+     if( abs(xt - x1) > skipDistance || abs( yt - y1 ) > skipDistance )
     moveTo((int)xt, (int)yt);
   }  
 }
@@ -87,7 +96,7 @@ void drawCircleSegment(int centerx, int centery, int radius, int startSeg, int e
   
     // Estimate a circle using 20 arc Bezier curve segments
 //  println( centerx + "," + centery + ", " + radius + ", " + startSeg + ", " + endSeg );
-  int segments =20;
+  int segments = 20;
   int angle1 = 360/segments*startSeg;
   int midpoint=0;
   
@@ -119,8 +128,15 @@ void drawCircleSegment(int centerx, int centery, int radius, int startSeg, int e
 }
 
 void drawCircle(int centerx, int centery, int radius) {
+
   moveTo(centerx+radius, centery);
+//  debug = true;
   drawCircleSegment(centerx,centery,radius,0,20);
+  debug = false;
+  if( debug )
+  {
+    println( "took " + debugSteps ); debugSteps = 0;
+  }
 }
 
 

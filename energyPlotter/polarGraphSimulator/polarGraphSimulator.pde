@@ -12,8 +12,10 @@ float diameter = 1.24; //1.29
 float circumference = 3.1415 * diameter;
 
 int StepUnit = (int)(200 / circumference / 4);   
-
-
+int G = 0;
+boolean debug = false;
+int debugSteps = 0;
+ int scaling = 1;
 // Approximate dimensions (in steps) of the total drawing area
 int w= 68*StepUnit;
 int ceiling = 10*StepUnit;
@@ -35,6 +37,7 @@ void setup()
   lastPoint = new Point(x1, y1);
   currPoint = new Point(x1, y1);
   size(w, h);
+  println( "w " + w + ", h " + h );
   println( "started" );
   lString = a1 ; // - 100;
   rString = b1; // - 100; 
@@ -42,7 +45,7 @@ void setup()
   //   setupData();
   stroke(color(255, 0, 0));
   strokeWeight(2);
-
+/*
   try {
     in = new BufferedReader(new FileReader("/home/matthew/energy.data"));
   } 
@@ -51,8 +54,12 @@ void setup()
     println( e );
     exit();
   }
+  
   while( drawEnergyPic() )
   {}
+  
+*/
+ drawCircle(w/2,h/2,w/4);
 }
 int line = 0;
 String s;
@@ -112,9 +119,24 @@ void drawPoint()
 
   currPoint.x = x;
   currPoint.y = y;
-  //  ellipse( x, y, penWidth, penWidth );
-  line( lastPoint.x, lastPoint.y, currPoint.x, currPoint.y);
-  lastPoint = currPoint;
+  penWidth = 5;
+  /* stroke(color(0, G +=128, 0));
+ // println( (currPoint.x  * scaling - width / scaling - w) + "," + (currPoint.y * scaling - height/scaling - h));
+   if( G>255 )
+   G = 0;
+  int xOffset = 1500;
+  int yOffset = 1200;
+
+   */
+int xOffset = 0;
+int yOffset = 0;
+  if( debug )
+  {
+      println( x + "," + y );
+  }
+  line( lastPoint.x * scaling -  xOffset, lastPoint.y * scaling - yOffset, currPoint.x *scaling -xOffset, currPoint.y * scaling - yOffset);
+  lastPoint.x = currPoint.x;
+  lastPoint.y = currPoint.y;
 }
 
 void mousePressed()
