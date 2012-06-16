@@ -5,19 +5,40 @@ import java.util.GregorianCalendar;
 import java.net.*;
 import java.io.*;
 
+//how much data do we get?
+
+//interval, allows more sparse data
+String interval = "0"; // "0"; //interval 0 == all data, 60 = one datapoint every 60 secs
+//how many days data
+int days = 90;
+//when from?
+Calendar calendar = new GregorianCalendar(2011,Calendar.NOVEMBER,16);
+
+
 //where we'll store the data
 String energyFile = "/home/matthew/energy.data";
 String host = "api.pachube.com";
-String URL = "/v2/feeds/28462/datastreams/4.csv";
+String URL = "/v2/feeds/28462/datastreams/1.csv";
+//String URL = "/v2/feeds/28462/datastreams/4.csv";
 String key; //store your key in ./data/key
-String interval = "60"; // "0"; //interval 0 == all data, 60 = one datapoint every 60 secs
 ArrayList data = new ArrayList();
-
+BufferedWriter out;
 void setup()
 {
   size(200, 200);
   key = loadKey();
+
+  try {
+    out = new BufferedWriter(new FileWriter(energyFile));
+    
+  } 
+  catch (IOException e) 
+  {
+    println( e );
+  }
+
 }
+
 
 String loadKey()
 {
@@ -38,8 +59,8 @@ String loadKey()
 void draw() {
   String date, lastDate = "";
   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-  Calendar calendar = new GregorianCalendar(2012,Calendar.JANUARY,6);
-  int days = 3;
+
+
   
   for( int i = 0; i <= 4 * days; i ++ )
   {
@@ -55,25 +76,25 @@ void draw() {
         if( linesGot != 100 )
           break;
       }
-    }    
+    
+    
+ 
+   
+  }    
     lastDate = date;
     calendar.add(Calendar.HOUR,6);
   }
   //do nothing
-  println( "finished" );
-  try {
-    BufferedWriter out = new BufferedWriter(new FileWriter(energyFile));
-    for(Iterator i = data.iterator();i.hasNext();)
-    {
-      out.write((String)(i.next()));
-      out.write( "\n" );
-    }
+  try
+  {
     out.close();
-  } 
-  catch (IOException e) 
+  }
+   catch (IOException e) 
   {
     println( e );
+    exit();
   }
+  println( "finished" );
   while(true)
   {
   }
@@ -97,6 +118,9 @@ int readURL( String urlString )
       // System.out.println(inputLine);
       data.add( inputLine );
       lines ++;
+      out.write((String)(inputLine));
+      out.write( "\n" );
+    
     }
     println( "got " + lines );
     println( "array size: " + data.size() );
